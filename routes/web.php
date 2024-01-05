@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StoreController;
+use App\Models\Leaflet;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,8 +17,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/',[StoreController::class, 'index']);
+
+Route::post('/filter/', [AjaxController::class, 'leafletAjax']);
+
+Route::get('/promotions/', function () {
+    return view('main.leaflets');
+});
+Route::get('/chains/', function () {
+    return view('main.chains');
 });
 
 Route::get('/dashboard', function () {
