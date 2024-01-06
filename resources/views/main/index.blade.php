@@ -52,7 +52,7 @@
 
     <x-leaflets-filter  :leaflets="$leaflets" :categories="$category_stores"/>
 
-    <x-blog-slider/>
+    <x-blog-slider :blogs="$blogs"/>
 
     <div class="col-md-6 mt-4 rek-box set_rek"><span class="rek_margin">REKLAMA</span></div>
 

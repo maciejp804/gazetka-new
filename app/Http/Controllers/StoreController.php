@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Blog;
 use App\Models\CategoryStore;
 use App\Models\Leaflet;
 use App\Models\Place;
@@ -30,6 +31,7 @@ class StoreController extends Controller
         $online = $store->where('is_online', 1);
         $vouchers=Voucher::with('voucherStore')->where('end_offer_date', '>=', date('Y-m-d'))->take(10)->get();
         $places = Place::all()->sortByDesc('population')->take(35);
+        $blogs = Blog::all()->sortByDesc('updated_at')->take(10);
         return view('main.index', [
             'stores' => $store,
             'category_stores' => $category_stores,
@@ -38,6 +40,7 @@ class StoreController extends Controller
             'online' => $online,
             'vouchers'=> $vouchers,
             'places' => $places,
+            'blogs' => $blogs
         ]);
 
     }
