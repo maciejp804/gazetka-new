@@ -6,7 +6,7 @@
         <div class="">
             <div class="d-flex">
                 @foreach($places->split($places->count()/7) as $row)
-                <div class="col">
+                <div class="col @if($loop->index > 2) desktop-only @endif">
                     <ul class="f-link-ul collapse show ul_jrkjha d-flex flex-column flex-md-wrap id="t-cate" data-bs-parent="#footer-accordian">
                         @foreach($row as $place)
                             <li class="f-link-ul-li ser_pad"><a href="/{{$place->slug}}/" class="a_41xate">{{$place->name}}</a></li>
