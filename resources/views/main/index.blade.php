@@ -35,7 +35,7 @@
 
     <x-commercial-networks-slider :stores="$stores"/>
 
-    <x-most-products-slider/>
+    <x-most-products-slider :products="$products"/>
 
     <x-commercial-online :online="$online"/>
 
