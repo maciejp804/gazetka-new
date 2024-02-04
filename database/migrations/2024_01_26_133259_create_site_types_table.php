@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('category_stores', function (Blueprint $table) {
+        Schema::create('site_types', function (Blueprint $table) {
             $table->id();
-            $table->integer('category_index')->unique();
-            $table->string('name')->unique();
-            $table->string('slug')->unique();
-            $table->string('image_path')->default('assets/image/category/default.png');
+            $table->string('name');
+            $table->foreignId('place_id')->nullable()->constrained('places','id')->nullOnDelete();
+            $table->foreignId('store_id')->nullable()->constrained('stores','id')->nullOnDelete();
+            $table->string('explanation');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('category_stores');
+        Schema::dropIfExists('site_types');
     }
 };

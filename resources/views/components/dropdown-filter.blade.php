@@ -1,3 +1,15 @@
+<section class="szukane1 category-img1 section-t-padding section-b-padding section_pbrcnh">
+    <div class="container">
+        <div class="section-title3">
+            <h2 class="desktop-only h2_yhnkej">
+                <span>Przeglądaj gazetki i katalogi</span>
+            </h2>
+            <h2 class="mob-only">Przeglądaj gazetki i katalogi
+                <div class="border_color"></div>
+            </h2>
+        </div>
+    </div>
+</section>
 <section class="category-img1 section-t-padding section-b-padding section_q2vymy" style="padding-bottom: 20px">
     <div class="container">
         <form class="row" id="id_filter">
@@ -6,9 +18,8 @@
                     <div class="header-main">
                         <div class="header-element search-wrap div_xgmv7r">
                             <select name="category" class="select" required id="id_category">
-                                <option value="0">Wszystkie</option>
-                                @foreach($categories as $category)
-                                    <option value="{{$category->id}}">{{$category->name}}</option>
+                                @foreach($leafletCategories as $leaftetategory)
+                                    <option value="{{$leaftetategory->category_index}}">{{$leaftetategory->name}}</option>
                                 @endforeach
                             </select>
                         </div>

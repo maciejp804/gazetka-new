@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('category_stores', function (Blueprint $table) {
+        Schema::create('site_question_answers', function (Blueprint $table) {
             $table->id();
-            $table->integer('category_index')->unique();
-            $table->string('name')->unique();
-            $table->string('slug')->unique();
-            $table->string('image_path')->default('assets/image/category/default.png');
+            $table->integer('type_id');
+            $table->integer('box_id');
+            $table->text('question');
+            $table->text('answer');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('category_stores');
+        Schema::dropIfExists('site_question_answers');
     }
 };

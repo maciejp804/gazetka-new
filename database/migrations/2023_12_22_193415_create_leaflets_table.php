@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('leaflets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('store_id');
-            $table->integer('leaflet_category_id');
+            $table->foreignId('store_id')->nullable()->constrained('stores')->onDelete('cascade'); // klucz obcy
+            $table->foreignId('leaflet_category_id')->nullable()->constrained('leaflet_categories')->onDelete('set null'); // klucz obcy
             $table->integer('leaflet_number');
             $table->string('meta_title');
             $table->string('meta_description');
@@ -34,6 +34,7 @@ return new class extends Migration
             $table->boolean('is_next_promo');
             $table->integer('liked_users');
             $table->timestamps();
+
         });
     }
 

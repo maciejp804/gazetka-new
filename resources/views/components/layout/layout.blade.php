@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="Wang ChangSheng">
+    <meta name="description" content="{{$meta_description ?? 'Przykładowy opis'}}">
+    <meta name="author" content="Maciej Puchalski">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Gazetki promocyjne • aktualne oferty • GazetkaPromocyjna.com.pl</title>
+    <title>{{$title ?? 'Uwaga przykładowy tytuł'}}</title>
 
 
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -37,9 +37,11 @@
 <body>
 <div id="__next">
     <div class="App">
-   @include('/components.header')
+        @include('/components.header')
+
         {{$slot}}
-@include('/components.footer')
+
+        @include('/components.footer')
 
     </div>
 </div>
@@ -58,6 +60,7 @@
     "https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js">
 </script>
 <script src="{{asset('assets/js/custom.js')}}"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 
 

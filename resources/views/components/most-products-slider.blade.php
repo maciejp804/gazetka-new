@@ -33,7 +33,7 @@
                                     <a href="/w-gazetce/{{$product->slug}},{{$product->id}}/" class="a_61txho">{{$product->name}}</a>
                                 </h3>
                                 <div class="pro-price">
-                                    <span class="old-price">11.22 zł</span>
+                                    <span class="old-price">od 11.22 zł</span>
                                 </div>
                             </div>
                         </div>

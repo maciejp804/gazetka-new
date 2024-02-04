@@ -1429,7 +1429,7 @@ nextjs-portal {
     font-family: 'Ubuntu';
     font-style: normal;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 22px;
     color: #2F2F2F;
     width: 15%;
@@ -1448,8 +1448,8 @@ nextjs-portal {
     font-family: 'Ubuntu';
     font-style: normal;
     font-weight: 400;
-    font-size: 13px;
-    line-height: 22px;
+    font-size: 12px;
+    line-height: 16px;
     color: #545454;
 }
 

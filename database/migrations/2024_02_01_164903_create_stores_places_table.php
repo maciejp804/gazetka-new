@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('places', function (Blueprint $table) {
-            $table->string('image_path')->default('default.png');
+        Schema::create('stores_places', function (Blueprint $table) {
+            $table->id();
+            $table->integer('store_id');
+            $table->integer('place_id');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('places', function (Blueprint $table) {
-            $table->dropColumn('image_path');
-        });
+        Schema::dropIfExists('stores_places');
     }
 };

@@ -22,4 +22,9 @@ class Store extends Model
     {
         return $this->hasMany(Leaflet::class);
     }
+
+    public function places()
+    {
+        return $this->belongsToMany(Place::class, 'stores_places', 'store_id', 'place_id');
+    }
 }

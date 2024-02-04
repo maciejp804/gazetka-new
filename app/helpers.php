@@ -1,5 +1,10 @@
 <?php
 
+use App\Models\SiteMeta;
+use App\Models\SiteType;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 if (! function_exists('monthReplace')) {
     function monthReplace ($date, $format = 'd-m-Y', $separator = ' '){
 
@@ -34,3 +39,18 @@ if (! function_exists('monthReplace')) {
     }
 }
 
+if (! function_exists('siteValidator'))
+{
+    function siteValidator ($site, $place = null)
+    {
+        try {
+            $descriptions = SiteType::with(['descriptions','questions', 'meta'])->where('name',$site)
+                ->where('place_id', '=', $place)->firstOrFail();
+
+        } catch (ModelNotFoundException $e) {
+            $descriptions = new SiteType();
+        }
+
+             return $descriptions;
+    }
+}

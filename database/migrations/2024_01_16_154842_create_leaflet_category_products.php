@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('category_stores', function (Blueprint $table) {
+        Schema::create('leaflet_category_products', function (Blueprint $table) {
             $table->id();
-            $table->integer('category_index')->unique();
-            $table->string('name')->unique();
-            $table->string('slug')->unique();
-            $table->string('image_path')->default('assets/image/category/default.png');
+            $table->foreignId('product_id')->nullable()->constrained('products');
+            $table->foreignId('category_id')->nullable()->constrained('leaflet_categories');
+            $table->foreignId('subcategory_id')->nullable()->constrained('leaflet_categories');
             $table->timestamps();
         });
+
     }
 
     /**
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('category_stores');
+        Schema::dropIfExists('leaflet_category_products');
     }
 };

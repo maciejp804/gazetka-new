@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('category_stores', function (Blueprint $table) {
+        Schema::create('voivodeships', function (Blueprint $table) {
             $table->id();
-            $table->integer('category_index')->unique();
-            $table->string('name')->unique();
-            $table->string('slug')->unique();
-            $table->string('image_path')->default('assets/image/category/default.png');
+            $table->integer('voivodeship_id');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('category_stores');
+        Schema::dropIfExists('voivodeship');
     }
 };

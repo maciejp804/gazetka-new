@@ -4,15 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Leaflet;
+use App\Models\LeafletCategory;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class AjaxController extends Controller
 {
     public function leafletAjax()
     {
+        $leafletCategory = LeafletCategory::where('category_index','=',$_POST['category'])->get();
+
         $leaflets = Leaflet::with('store')->where('end_offer_date', '>=', date('Y-m-d'));
         if ($_POST['category'] != 0) {
-            $leaflets = $leaflets->where('leaflet_category_id', $_POST['category']);
+            $leafletCategory = LeafletCategory::where('category_index',$_POST['category'])->first();
+            $id = $leafletCategory->id;
+            $productsInCategory = Product::whereHas('leaflet_categories', function ($query) use ($id) {
+                $query->where('category_id', $id);})->pluck('id');
+
+            $leaflets = $leaflets->whereHas('products', function ($query) use ($productsInCategory){
+                $query->whereIn('product_id', $productsInCategory);
+            });
         }
 
         switch ($_POST['sort']){
@@ -34,11 +45,11 @@ class AjaxController extends Controller
             });
         }
 
-        $leaflets = $leaflets->take(15)->get();
+        $items = $leaflets->take(15)->get();
 
 
 
-        return view('components.promotions-box-filter', compact('leaflets'));
+        return view('components.promotions-box-filter', compact('items'));
 
 
     }
