@@ -24,7 +24,7 @@
                                             </a>
                                         </li>
                                         <li class="menu-link">
-                                            <a href="/blogs/" class="link-title a_855y2r">
+                                            <a href="/abc-zakupowicza/" class="link-title a_855y2r">
                                                 <span class="sp-link-title font_set span_701viq">Abc zakupowicza</span>
                                             </a>
                                         </li>

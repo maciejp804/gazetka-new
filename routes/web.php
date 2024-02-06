@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AjaxController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ChainController;
 use App\Http\Controllers\LeafletController;
 use App\Http\Controllers\ProfileController;
@@ -21,16 +22,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',[StoreController::class, 'index']);
 
-
-
 Route::post('/filter/', [AjaxController::class, 'leafletAjax']);
 
 Route::get('/gazetki-promocyjne-{slug},{leaflet_category_id}/', [LeafletController::class, 'index'])
     ->whereNumber('leaflet_category_id');
 
 Route::get('/sieci-handlowe-{slug},{store_category_id}', [ChainController::class, 'index'])
-    ->whereNumber('store_category_id');;
+    ->whereNumber('store_category_id');
+
+Route::get('abc-zakupowicza/',[BlogController::class, 'index']);
+
 Route::get('/{slug}/',[StoreController::class, 'indexLocalisation']);
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
