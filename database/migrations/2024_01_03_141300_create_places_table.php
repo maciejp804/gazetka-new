@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('slug');
             $table->integer('population');
             $table->float('surface')->nullable();
-            $table->integer('foundation');
+            $table->integer('foundation')->nullable();
             $table->decimal('lat',10,8)->default(51.4794644);
             $table->decimal('lng', 11,8)->default(15.984267);
             $table->string('image_path')->default('assets/image/places/default.png');
