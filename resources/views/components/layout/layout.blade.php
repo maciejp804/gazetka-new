@@ -143,7 +143,7 @@
         let form_data = $('#id_filter').serialize();
         $.ajax({
             type: 'post',
-            url: "/filter/",
+            url: "/filter",
             data: form_data,
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
