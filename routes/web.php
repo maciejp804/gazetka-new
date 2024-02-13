@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',[StoreController::class, 'index']);
 
-Route::post('/filter/', [AjaxController::class, 'leafletAjax']);
+Route::post('/filter', [AjaxController::class, 'leafletAjax']);
 
 Route::get('/gazetki-promocyjne-{slug},{leaflet_category_id}/', [LeafletController::class, 'index'])
     ->whereNumber('leaflet_category_id');
