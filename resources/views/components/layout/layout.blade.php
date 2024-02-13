@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="noindex">
     <meta name="description" content="{{$meta_description ?? 'Przykładowy opis'}}">
     <meta name="author" content="Maciej Puchalski">
     <meta name="csrf-token" content="{{ csrf_token() }}">
