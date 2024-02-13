@@ -2096,7 +2096,7 @@ body {
 }
 
 .tagged {
-    width: 18%;
+    width: 13%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2105,7 +2105,7 @@ body {
     border-radius: 5px;
     color: #535353;
     font-weight: 400;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 18px;
 }
 
@@ -2141,6 +2141,9 @@ body {
     line-height: 16px;
     color: #FFFFFF;
 
+}
+.white-cont:hover {
+    color: #FFFFFF;
 }
 
 .azulito {
@@ -2183,6 +2186,9 @@ body {
     flex-direction: column;
     justify-content: center;
 
+}
+.big-bluew-gap {
+    gap: 15px;
 }
 
 .person-round {

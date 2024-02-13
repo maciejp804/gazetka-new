@@ -30,7 +30,9 @@ Route::get('/gazetki-promocyjne-{slug},{leaflet_category_id}/', [LeafletControll
 Route::get('/sieci-handlowe-{slug},{store_category_id}', [ChainController::class, 'index'])
     ->whereNumber('store_category_id');
 
-Route::get('abc-zakupowicza/',[BlogController::class, 'index']);
+Route::get('abc-zakupowicza',[BlogController::class, 'index']);
+
+Route::get('abc-zakupowicza/{slug}/',[BlogController::class, 'showByCategory']);
 
 Route::get('/{slug}/',[StoreController::class, 'indexLocalisation']);
 

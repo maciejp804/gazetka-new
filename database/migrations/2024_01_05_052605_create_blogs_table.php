@@ -16,10 +16,10 @@ return new class extends Migration
             $table->string('title');
             $table->string('excerpt');
             $table->string('body');
-            $table->foreignId('author_id');
+            $table->foreignId('author_id')->nullable()->constrained('users','id');
             $table->string('slug');
             $table->string('image_path');
-            $table->foreignId('category_article_id');
+            $table->foreignId('category_article_id')->nullable()->constrained('category_articles','id');
             $table->timestamps();
         });
     }

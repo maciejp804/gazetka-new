@@ -47,8 +47,8 @@ class StoreController extends Controller
 
 
         if($descriptions->meta->isEmpty()){
-            $meta_title = 'Uwaga przykładowy tytuł';
-            $meta_description = 'Uwaga przykładowy opis';
+            $meta_title = "Gazetki promocyjne • aktualne oferty • GazetkaPromocyjna.com.pl";
+            $meta_description = "Gazetki promocyjne sieci handlowych pozwolą Ci zaoszczędzić czas i pieniądze. Dzięki nowym ulotkom poznasz aktualną ofertę sklepów.";
         } else {
             $meta_title = $descriptions->meta->first()->meta_title;
             $meta_description = $descriptions->meta->first()->meta_description;
@@ -122,8 +122,8 @@ class StoreController extends Controller
 
 
         if($descriptions->meta->isEmpty()){
-            $meta_title = 'Uwaga przykładowy tytuł';
-            $meta_description = 'Uwaga przykładowy opis';
+            $meta_title = "Gazetki promocyjne w $place->name_locative • aktualne oferty • GazetkaPromocyjna.com.pl";
+            $meta_description = "Aktualne gazetki promocyjne, wyprzedaże, okazje i oferty sieci handlowych w $place->name_locative • GazetkaPromocyjna.com.pl • wiele promocji w jednym miejscu";
         } else {
             $meta_title = $descriptions->meta->first()->meta_title;
             $meta_description = $descriptions->meta->first()->meta_description;
@@ -132,7 +132,7 @@ class StoreController extends Controller
 
         $page_descriptions = $descriptions->descriptions->where('place', 'bottom');
         $place_descriptions = $descriptions->descriptions->where('place', 'middle')->first();
-
+        //dd($place_descriptions);
         return view('main.index', [
             'stores' => $storesInLocation,
             'category_stores' => $category_stores,
