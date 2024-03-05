@@ -1,3 +1,29 @@
+const blogLeafletSlider = {
+    loop: false,
+    rewind: true,
+    margin: 30,
+    nav: true,
+    navText: ['<i class="fa fa-angle-left"></i>', '<i class="fa fa-angle-right"></i>'],
+    dots: true,
+    responsive: {
+        0: {
+            items: 2,
+            margin: 9,
+        },
+        768: {
+            items: 3,
+            margin: 9,
+        },
+        1000: {
+            items: 3
+        },
+        1300: {
+            items: 4,
+            margin: 18,
+        },
+    }
+}
+
 const trendingProducts = {
   loop: false,
   rewind: true,
@@ -132,6 +158,7 @@ const zsdOptions = {
 
 $(document).ready(function () {
   $('.trending-products').owlCarousel(trendingProducts);
+  $('.blog-leaflet-slider').owlCarousel(blogLeafletSlider);
   $('.home-category').owlCarousel(homeCategory);
   $('.different').owlCarousel(different);
   $('.trending-productss').owlCarousel(trendingProductss);

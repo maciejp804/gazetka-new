@@ -55,6 +55,7 @@ class ChainController extends Controller
             'storeCategory' => $storeCategory[$store_category_id],
             'storeCategoryPath' => 'sieci-handlowe',
             'leaflets_promo' => $leaflets_with_promo,
+            'leafletsPromoTitle' => 'Polecane gazetki promocyjne',
             'stores' => $stores,
             'metaTitle' => $meta_title,
             'metaDescription' => $meta_description,

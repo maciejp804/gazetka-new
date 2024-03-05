@@ -12,9 +12,9 @@
                     <div class="col-md-3 items hover_eff">
                         <div class="tred-pro image_container_s">
                             <div class="tr-pro-img member">
-                                <a href="/poradnik-{{$blog->slug}}">
+                                <a href="abc-zakupowicza/{{$blog->categories->slug}}/{{$blog->slug}}">
                                     <img class="img-fluid image_s"
-                                         src="{{asset('assets/media/blogs/5_UTSyao9.png')}}"
+                                         src="{{asset($blog->image_thumbnail)}}"
                                          alt="pro-img1">
                                 </a>
                             </div>
@@ -22,7 +22,7 @@
                         </div>
                         <div class="caption">
                             <div class="pro-price div_3id9cs"><span class="old-price">{{monthReplace($blog->created_at,'d-m-Y',' ')}}</span></div>
-                            <h3 class="text-black"><a class="hover_eff_title a_8okvwe" href="/poradnik-{{$blog->slug}}">{{$blog->title}}</a></h3>
+                            <h3 class="text-black"><a class="hover_eff_title a_8okvwe" href="abc-zakupowicza/{{$blog->categories->slug}}/{{$blog->slug}}">{{$blog->title}}</a></h3>
                             <div class="pro-price div_j090ik"><span
                                     class="old-price span_doglm7">{!!$blog->excerpt!!}</span>
                             </div>

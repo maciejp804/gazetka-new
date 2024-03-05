@@ -14,11 +14,14 @@ return new class extends Migration
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('excerpt');
-            $table->string('body');
+            $table->text('excerpt');
+            $table->text('body');
             $table->foreignId('author_id')->nullable()->constrained('users','id');
             $table->string('slug');
             $table->string('image_path');
+            $table->string('image_thumbnail')->default('assets/image/pro/mujercest.png');
+            $table->string('meta_title');
+            $table->string('meta_description');
             $table->foreignId('category_article_id')->nullable()->constrained('category_articles','id');
             $table->timestamps();
         });

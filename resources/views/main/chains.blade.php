@@ -58,7 +58,7 @@
             <div class="set_center center_box d-flex justify-content-center align-items-center" style="margin: auto"><span>REKLAMA</span></div>
         </div>
     </section>
-    <x-promotions-slider :items="$leaflets_promo" :place="$place ?? null"/>
+    <x-promotions-slider :items="$leaflets_promo" :place="$place ?? null" :title="$leafletsPromoTitle"/>
 
     @if(!$pageDescriptions->isEmpty())
         <x-description :items="$pageDescriptions"/>

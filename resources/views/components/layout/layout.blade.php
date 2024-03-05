@@ -31,6 +31,24 @@
     <link rel="stylesheet" href="{{asset('assets/css/inline.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/dark.css')}}">
     <link rel="stylesheet" href="{{asset('assets/libs/raty/jquery.raty.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/maps_2m.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/mapa.css')}}">
+
+
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- Leaflet.markercluster CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+
+    <!-- Leaflet.markercluster JavaScript -->
+    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 
 
 
@@ -62,11 +80,6 @@
 </script>
 <script src="{{asset('assets/js/custom.js')}}"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-
-
-
-
 
 <script>
 

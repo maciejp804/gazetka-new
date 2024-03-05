@@ -1,19 +1,18 @@
 <section class="h-t-products1 first-section">
-    <div class="container cont_set">
+    <div class="container">
         <div class="row">
-            <div class="section-title3 desktop-only">
-                <h2 class="h2_7267fp"><span>Polecane gazetki promocyjne
-                        @if($place !== null)
-                            w {{$place->name_locative}}
-                        @endif
-                        </span></h2>
-                   <a class="more-link desktop-only h2_io1e0s" href="/gazetki-promocyjne-wszystkie,0/">Zobacz więcej</a>
-            </div>
-            <h2 class="mob-only">Polecane gazetki promocyjne<div class="border_color"></div></h2>
+            @if($title != '')
+            <x-slider-title :place="$place ?? null" :title="$title"/>
+            @endif
             <div class="col">
-                <div class="owl-carousel trending-products owl-theme first-product">
+                <div class="owl-carousel
+                @if(isset($class))
+                {{$class}}
+                @else
+                trending-products
+                 @endif
+                 owl-theme first-product">
                     @foreach($items as $item)
-
                         <div class="items w-set">
                             <div class="tred-pro image_container">
                                 <div class="tr-pro-img">
@@ -36,7 +35,7 @@
 
                             <div class="caption text-center">
                                 <img class="img-fluid img_s6n7ag"
-                                     src="{{asset('assets/image/shop/'.$item->store->logo)}}"
+                                     src="{{asset($item->store->leaflet_logo)}}"
                                      alt="pro-img1">
                                 <h3 class="text-black"><a href="/promotion/{{ $item->slug }}/"
                                                           class="a_ctv6kx">{{monthReplace($item->start_offer_date, 'd-m')}} - {{monthReplace($item->end_offer_date)}}</a></h3>

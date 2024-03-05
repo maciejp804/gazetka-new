@@ -6,6 +6,7 @@ use App\CustomPaginator;
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
 use App\Models\CategoryArticle;
+use App\Models\Leaflet;
 use Illuminate\Http\Request;
 
 
@@ -41,7 +42,7 @@ class BlogController extends Controller
         $blogs_przepisy = $blogs->where('category_article_id','=', 5)->take(4);
         $blogs_aktualnosic = $blogs->where('category_article_id','=', 6)->take(4);
 
-       return view('main.blog',[
+       return view('main.blog.index',[
            'metaTitle' => $meta_title,
            'metaDescription' => $meta_description,
            'blogs' => $blogs_porady,
@@ -56,10 +57,10 @@ class BlogController extends Controller
         ]);
     }
 
-    public function showByCategory($slug, $page_number = 1)
+    public function showByCategory($category_slug, $page_number = 1)
     {
         $blog_categories = CategoryArticle::all();
-        $blog_category = $blog_categories->where('slug', '=', $slug)->first();
+        $blog_category = $blog_categories->where('slug', '=', $category_slug)->first();
         if($blog_category === null){
             abort(404);
         }
@@ -94,12 +95,53 @@ class BlogController extends Controller
         $paginators->withPath($url);
 
 
-        return view('main.blog',[
-            "metaTitle" => $meta_title,
+        return view('main.blog.index',[
+            'metaTitle' => $meta_title,
             'metaDescription' => $meta_description,
             'blogs' => $paginators,
             'blogCategories' => $blog_categories,
-            'slug' => $slug
+            'slug' => $category_slug
         ]);
     }
+
+    public function show($category_slug, $blog_slug)
+    {
+        $blog_categories = CategoryArticle::all();
+        $blog_category = $blog_categories->where('slug', '=', $category_slug)->first();
+        if($blog_category === null){
+            abort(404);
+        }
+        $posts = Blog::with('categories', 'sliders')->get();
+        $posts_category = $posts->where('category_article_id','=', $blog_category->id);
+        $blog_content = $posts->where('slug','=', $blog_slug)->first();
+        //$blog_content = Blog::with('categories')->where('slug','=', $blog_slug)->first();
+
+        if ($blog_content === null){
+            abort(404);
+        }
+
+
+        $sliders_data = [];
+        $sliders_data['sliders'] = count($blog_content->sliders);
+        for ($i = 0; $i < count($blog_content->sliders); $i++)
+        {
+            $sliderName = 'slider' . $i;
+            $leaflets = Leaflet::with('store')->where('end_offer_date', '>=', date('Y-m-d'))
+                ->where('store_id', '=', $blog_content->sliders[$i]->store_id)->get();
+            $sliders_data[$sliderName]['slider'] = $leaflets;
+            $sliders_data[$sliderName]['title'] = 'Sprawdź gazetki '. $leaflets[0]->store->name_genitive;
+        }
+
+
+        return view('main.blog.show',[
+            'blogCategories' => $blog_categories,
+            'blogCategory' => $blog_category,
+            'categorySlug' => $category_slug,
+            'blogSlug' => $blog_slug,
+            'blogContent' => $blog_content,
+            'postsCategory' => $posts_category,
+            'slidersData' => $sliders_data,
+        ]);
+    }
+
 }

@@ -46,7 +46,7 @@
         </div>
     </section>
 
-    <x-promotions-slider :items="$leaflets_promo" :place="$place ?? null"/>
+    <x-promotions-slider :items="$leaflets_promo" :place="$place ?? null" :title="$leafletsPromoTitle"/>
 
     <x-info-slider/>
 
@@ -65,6 +65,11 @@
 
         <x-place-description :placeDescription="$placeDescription" :place="$place"/>
     @endif
+    @if(isset($markers))
+        <x-store-list :place="$place" :markers="$markersInZone" :weekday="$weekday"/>
+        <x-map :place="$place" :markers="$markers"/>
+    @endif
+
     <x-vouchers-slider :vouchers="$vouchers"/>
 
 
@@ -90,9 +95,13 @@
     <x-description :items="$pageDescriptions"/>
     @endif
 
+
+
     @if(!$pageQuestions->isEmpty())
         <x-faq :items="$pageQuestions"/>
     @endif
        <x-newsletter/>
+
+
 </x-layout.layout>
 

@@ -34,6 +34,8 @@ Route::get('abc-zakupowicza',[BlogController::class, 'index']);
 
 Route::get('abc-zakupowicza/{slug}/',[BlogController::class, 'showByCategory']);
 
+Route::get('abc-zakupowicza/{category_slug}/{blog_slug}',[BlogController::class, 'show']);
+
 Route::get('/{slug}/',[StoreController::class, 'indexLocalisation']);
 
 Route::get('/dashboard', function () {

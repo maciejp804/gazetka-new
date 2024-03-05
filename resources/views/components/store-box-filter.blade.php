@@ -6,7 +6,7 @@
                 <div class="tred-pro">
                     <div class="tr-pro-img member">
                         <a>
-                            <img class="img-fluid img_zv1lu7" src="{{asset('assets/image/shop/'.$store->logo)}}" alt="pro-img1">
+                            <img class="img-fluid img_zv1lu7" src="{{asset($store->logo)}}" alt="pro-img1">
                             <img class="img-fluid additional-image img_yydtz3" src="{{asset('assets/image/pro/solid-color-image.png')}}">
                         </a>
                     </div>

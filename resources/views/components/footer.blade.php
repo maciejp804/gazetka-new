@@ -9,7 +9,7 @@
                             <ul class="f-link-ul collapse" id="t-cate" data-bs-parent="#footer-accordian">
                                 <li class="f-link-ul-li desktop-only"><a><b>Gazetki promocyjne</b></a></li>
 
-                                <li class="f-link-ul-li"><a href="/promotion/420/">sample promotion19</a></li>
+                                <li class="f-link-ul-li"><a href="/promotion/420/"></a></li>
 
                                 <li class="f-link-ul-li"><a href="/promotion/419/">sample promotion18</a></li>
 
@@ -82,7 +82,7 @@
                     <li class="f-link-ul-li li_tdel4g"><a href="#">Kontakt</a></li>
                     <li class="f-link-ul-li li_u6mjq3"><a href="#">Pomoc</a></li>
                 </ul>
-                <ul class="f-bottom text-center"><p class="p_gi5idp">2022 © Gazetkapromocyjna.com.pl. Wszelkie prawa
+                <ul class="f-bottom text-center"><p class="p_gi5idp">{{date('Y', strtotime('now'))}} © Gazetkapromocyjna.com.pl. Wszelkie prawa
                         zastrzeżone<!-- --> </p></ul>
             </div>
         </div>

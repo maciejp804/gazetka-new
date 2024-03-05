@@ -1,0 +1,103 @@
+/**
+ * @license
+ * Copyright 2019 Google LLC. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+/*
+ * Always set the map height explicitly to define the size of the div element
+ * that contains the map.
+ */
+#map {
+    height: 600px;
+}
+
+/*
+ * Optional: Makes the sample page fill the window.
+ */
+
+/* HTML marker styles */
+.price-tag, .center-marker {
+    background-color: #4285F4;
+    border-radius: 50%;
+    border: 2px solid orange;
+    color: #FFFFFF;
+    font-size: 0px;
+    padding: 2px 2px;
+    position: relative !important;
+    z-index : 1;
+}
+
+.center-marker {
+    background-color: #ea0808;
+    border: 2px solid #ea0808;
+}
+.my_location
+{
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    color: #FFFFFF;
+}
+
+.price-tag::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 95%;
+    transform: translate(-50%, 0);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #4285F4;
+}
+
+.price-tag img, .center-marker img {
+    width: 32px !important;
+    border-radius: 50%;
+}
+@keyframes pulsateAnimation {
+    0% {
+        opacity: 0;
+        transform: scale(.1)
+    }
+
+    50% {
+        opacity: 1
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(1.2)
+    }
+}
+
+
+.pulse {
+    background: rgba(255,165,0,.365);
+    border-radius: 50%;
+    height: 14px;
+    left: 65%;
+    margin: 11px 0 0 -12px;
+    position: absolute;
+    top: 65%;
+    transform: rotateX(55deg);
+    width: 14px;
+    z-index: -2;
+}
+
+.pulse:after {
+    animation: pulsateAnimation 1s ease-out;
+    animation-delay: 1.1s;
+    animation-iteration-count: infinite;
+    border-radius: 50%;
+    box-shadow: 0 0 1px 2px rgb(255 165 0);
+    content: "";
+    height: 40px;
+    margin: -13px 0 0 -13px;
+    opacity: 0;
+    position: absolute;
+    width: 40px;
+}

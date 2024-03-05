@@ -1,0 +1,347 @@
+.map{
+    position: relative;
+    width: 100%;
+    background-color: rgba(255,255,255, 1);
+    margin-bottom: 10px;
+}
+.map-cadr-panel {
+    padding: 10px;
+}
+
+.opening-hours {
+    position: relative;
+    margin: auto;
+    width: 100%;
+    }
+.opening-hours h1{
+  margin: 5px 15px;
+  font-size: 16px;
+  float: left;
+}
+
+#map {
+height: 600px;
+width: 100%;
+}
+
+#mapSidebar {
+ height: 500px;
+ position: absolute;
+ top: 50px;
+ width: 300px;
+ overflow-x: hidden;
+ overflow-y: scroll;
+ background: aliceblue;
+ z-index: 900;
+}
+#mapSidebar li {
+    list-style: none;
+}
+#shop_box {
+    height: 30px;
+    line-height: 30px;
+}
+
+.opening-hours{
+    margin: auto;
+    width: 100%;
+    max-width: 1280px;
+    }
+.map-search {
+    float: left;
+    width: 100%;
+    min-height: 60px;
+    border: 1px solid rgba(255 , 128, 0, 0.3);
+    margin: 0 0 5px 0;
+}
+#searchContainer {
+    float: left;
+    z-index:10;
+    margin: 20px;
+}
+
+
+/* Style the search input field. */
+#field {
+    float:left;
+    width:300px;
+    height:27px;
+    line-height:27px;
+    text-indent:10px;
+    font-family:arial,sans-serif;
+    font-size:1em;
+    color:#aeaeae;
+
+    border: none;
+    border-bottom: 2px solid rgba(255, 128, 0, 0.5);
+    }
+
+#distance {
+    position:absolute;
+    width:200px;
+    height:27px;
+    line-height:27px;
+    text-indent:10px;
+    font-family:arial,sans-serif;
+    font-size:1em;
+    color:#666;
+    background:#fff;
+    border: none;
+    border-bottom: 2px solid rgba(255, 128, 0, 0.5);
+
+
+}
+
+#distance1 {
+    float: left;
+    z-index:10;
+    width:200px;
+    height: 27px;
+    margin: 20px 20px 20px 0;
+
+}
+
+.reset{
+    float: left;
+    width: 100px;
+    z-index:11;
+    margin: 20px 20px 20px 0;
+}
+
+.reset_button {
+    font-family:Helvetica, arial,sans-serif;
+    width: 100px;
+    background-color: rgba(54, 118, 185, 0.6);
+    border: none;
+    color: #fff;
+    height: 30px;
+    cursor: pointer;
+    z-index:11;
+}
+
+/* Style the "X" text button next to the search input field */
+#delete {
+    float:left;
+    width:16px;
+    height:29px;
+    line-height:27px;
+    margin-right:15px;
+    padding:0 10px;
+    font-family:"Lucida Sans","Lucida Sans Unicode",sans-serif;
+    font-size:22px;
+    background:#fff;
+    border:solid 1px #d9d9d9;
+    border-top:solid 1px silver;
+    border-left:none
+}
+
+/* Set default state of "X" and hide it */
+#delete #x {
+    color:#A1B9ED;
+    cursor:pointer;
+    display:none
+}
+
+/* Set the hover state of "X" */
+#delete #x:hover {
+    color:#36c
+}
+
+/* Syle the search button. Settings of line-height, font-size, text-indent used to hide submit value in IE */
+#submit {
+    cursor:pointer;
+    width:70px;
+    height:31px;
+    line-height:0;
+    font-size:0;
+    text-indent:-999px;
+    color:transparent;
+    background:url(lupe.png) no-repeat #4d90fe center;
+    border:1px solid #3079ED;
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px
+}
+
+#end {
+    float: right;
+    cursor:pointer;
+    width:90px;
+    height:20px;
+    line-height:0;
+    font-size:11px;
+    color:#fff;
+    background:no-repeat #3078BA center;
+    border:1px solid #3078BA;
+
+}
+
+/* Style the search button hover state */
+#submit:hover {
+    background:url(lupe.png) no-repeat center #357AE8;
+    border:1px solid #2F5BB7
+}
+
+/* Clear floats */
+.fclear {
+    clear:both
+}
+
+.leaflet-popup-content
+{
+    margin: 5px !important;
+    line-height: .75 !important;
+}
+
+#infobox {
+    width: 230px;
+    display: flex;
+    flex-direction: column;
+
+}
+#infobox a {
+    padding: 0px;
+    font-size:13px;
+    color: #666;
+    line-height: 10px;
+
+}
+
+#infobox img {
+    float:left;
+    margin:0 5px 0 0;
+    max-width:150px
+    }
+
+.infobox-image{
+    margin-bottom: 5px;
+}
+
+#map-canvas {
+    width:100%;
+    height:800px;
+    position:relative;
+    float:left;
+
+
+}
+
+#main {
+    float: left;
+    border: 1px solid rgba(255 , 128, 0, 0.3);
+    padding: 5px;
+    width: 100%;
+}
+
+#wrap {
+    position:relative;
+    width:220px;
+    margin:50px auto 0
+}
+
+#godziny-otwarcia {
+    position:relative;
+    width: 95%;
+    margin: auto;
+}
+.magazin-infowindow{
+    float: right;
+}
+.filterform input {
+    width:92%;
+    height:30px;
+    line-height:20px;
+    text-indent:10px;
+    font-size:12px;
+    color:#aeaeae;
+    background:#fff;
+    border: none;
+    border-bottom: 1px solid rgba(255 , 128, 0, 0.5);
+    margin: 5px 0;
+}
+
+#pasek ul {
+    list-style-type:none;
+    width: 95%;
+    margin: auto;
+}
+.OTWARTE {
+    color: green;
+    font-weight: bold;
+}
+.NIECZYNNE {
+    color: red;
+    font-weight: bold;
+}
+.open-houers{
+    margin-top: 15px;
+    width: 100%;
+    font-size: 11px;
+    display: flex;
+    flex-direction: column;
+}
+.open-houers-days {
+    float:right;
+}
+.active-day {
+    font-weight: bold;
+    color: #4caf50;
+}
+
+#pasekBoczny {
+    padding: 0;
+}
+
+.list-sidebar {
+    font-size: 12px;
+    width: 100%;
+    list-style: none;
+    color: rgba(188, 188, 188, 0.5);
+
+}
+
+.list-sidebar:hover {
+    background-color: rgba(188, 188, 188, 0.3);
+
+}
+.list-sidebar a {
+  text-decoration: none ;
+  color: #666;
+}
+.OTWARTE-no-bold {
+    color: green;
+    font-size: 12px !important ;
+
+}
+.NIECZYNNE-no-bold {
+    color: red;
+    font-size: 12px !important ;
+}
+.hours {
+    color: rgba(0,0,0,.67);
+}
+.expand-button {
+    height: 30px;
+    padding-left: 10px;
+    line-height: 30px;
+    background-color: burlywood;
+    color: white;
+}
+.lista-sklepow {
+    position: absolute;
+    top: 50px;
+    left: 15px;
+    width: 15%;
+    min-width: 200px;
+    height: 50%;
+    background-color: rgba(255,255,255, 1);
+    z-index: 100;
+}
+#pasek {
+    height: 400px;
+    background-color: rgba(255,255,255,1);
+    overflow: auto;
+}
+.box-map {
+    width: 100%;
+}
+

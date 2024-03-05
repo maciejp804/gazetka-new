@@ -20,7 +20,7 @@
                         <div class="tred-pro div_sw5kup">
                             <div class="tr-pro-img member">
                                 <a href="">
-                                    <img class="img-fluid img_zv1lu7" src="{{asset('assets/image/shop/'.$store->logo)}}" alt="pro-img1">
+                                    <img class="img-fluid img_zv1lu7" src="{{asset($store->logo)}}" alt="pro-img1">
                                     <img class="img-fluid additional-image img_yydtz3"
                                          src="{{asset('assets/image/pro/solid-color-image.png')}}">
                                 </a>

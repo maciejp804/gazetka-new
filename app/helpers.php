@@ -54,3 +54,39 @@ if (! function_exists('siteValidator'))
              return $descriptions;
     }
 }
+if (! function_exists('calculateDistance')) {
+    function calculateDistance($point1, $point2) {
+        $lat1 = $point1[0];
+        $lon1 = $point1[1];
+        $lat2 = $point2[0];
+        $lon2 = $point2[1];
+
+        $earthRadius = 6371; // Średnia odległość od środka Ziemi do jej powierzchni w kilometrach
+
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLon = deg2rad($lon2 - $lon1);
+
+        $a = sin($dLat / 2) * sin($dLat / 2) +
+            cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+            sin($dLon / 2) * sin($dLon / 2);
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+        $distance = $earthRadius * $c;
+
+        return $distance;
+    }
+}
+
+if (! function_exists('weekday')) {
+
+    function weekday()
+    {
+        return match (date('N')){
+          1,2,3,4,5 => 'weekdays',
+            6 => 'saturday',
+            7 => 'sunday',
+            default => 'null'
+        };
+
+    }
+
+}

@@ -7,6 +7,7 @@ use App\Models\Blog;
 use App\Models\CategoryStore;
 use App\Models\Leaflet;
 use App\Models\LeafletCategory;
+use App\Models\Map;
 use App\Models\Place;
 use App\Models\Product;
 use App\Models\SiteDescription;
@@ -60,6 +61,7 @@ class StoreController extends Controller
             'category_stores' => $category_stores,
             'leaflets'=> $leaflets,
             'leaflets_promo' => $leaflets_with_promo,
+            'leafletsPromoTitle' => 'Polecane gazetki promocyjne',
             'online' => $online,
             'vouchers'=> $vouchers,
             'places' => $places,
@@ -85,6 +87,7 @@ class StoreController extends Controller
         dd($queryLog);
         */
         $places = Place::with('voivodeship')->get();
+
         $place = $places->where('slug', $slug)->first();
         if($place === null){
             abort(404);
@@ -92,7 +95,6 @@ class StoreController extends Controller
         $places = $places->sortBy('population')->take(35);
         $placeId = $place->id;
         $site = 'main-index';
-
         $allStores = Store::with(['category','places'])->get();
         $storesInLocation = $allStores->filter(function ($stores) use ($placeId){
            return $stores->places->contains('id',$placeId);
@@ -133,11 +135,33 @@ class StoreController extends Controller
         $page_descriptions = $descriptions->descriptions->where('place', 'bottom');
         $place_descriptions = $descriptions->descriptions->where('place', 'middle')->first();
         //dd($place_descriptions);
+        $markers = Map::with('stores')->where('place_id','=',$placeId)->whereHas('stores')->get();
+
+        $sortedMarkers = $markers->sortBy(function($marker) use ($place) {
+            return calculateDistance([$marker->lat, $marker->lng], [$place->lat, $place->lng]);
+        })->take(15);
+
+        $markersWithDistance = $markers->filter(function ($marker) use ($place) {
+            $distance = calculateDistance([$marker->lat, $marker->lng], [$place->lat, $place->lng]);
+            $marker->distance = $distance;
+
+            return $marker;
+        });
+        $sortedMarkers = $markersWithDistance->sortBy('distance');
+
+        $filteredMarkers = $sortedMarkers->filter(function ($marker) {
+            return $marker->distance <= 10;
+        })->take(10);
+
+
+        //dd($filteredMarkers);
+
         return view('main.index', [
             'stores' => $storesInLocation,
             'category_stores' => $category_stores,
             'leaflets'=> $leaflets,
             'leaflets_promo' => $leafletsInLocation,
+            'leafletsPromoTitle' => 'Polecane gazetki promocyjne w '.$place->name_locative,
             'online' => $online,
             'vouchers'=> $vouchers,
             'places' => $places,
@@ -152,6 +176,9 @@ class StoreController extends Controller
             'metaDescription' => $meta_description,
             'place' => $place,
             'placeDescription' => $place_descriptions,
+            'markers' => $markers,
+            'markersInZone' =>$filteredMarkers,
+            'weekday' => weekday(),
         ]);
 
 

@@ -6,7 +6,10 @@
                 <h2 class="mob-only">Kupony rabatowe
                     <div class="border_color"></div>
                 </h2>
-                <h2 class="desktop-only h2_f51bpo"><a class="more-link" href="/coupons/">Zobacz więcej</a></h2></div>
+                <h2 class="desktop-only h2_f51bpo">
+                    <a class="more-link" href="/coupons/">Zobacz więcej</a>
+                </h2>
+            </div>
             <div class="col">
                 <div class="owl-carousel trending-products123 owl-theme different">
                     @foreach($vouchers as $voucher)
@@ -28,7 +31,8 @@
                     @endforeach
                 </div>
             </div>
-            <div class="all-blog text-center mt-4 mob-only"><a href="/coupons/" class="btn btn-style1 a_a64n9j">Zobacz więcej</a>
+            <div class="all-blog text-center mt-4 mob-only">
+                <a href="/coupons/" class="btn btn-style1 a_a64n9j">Zobacz więcej</a>
             </div>
         </div>
     </div>

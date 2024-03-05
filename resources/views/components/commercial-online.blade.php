@@ -16,7 +16,7 @@
                                 <div class="tr-pro-img member">
                                     <a href="#">
                                         <img class="img-fluid img_rkb1s"
-                                             src="{{asset('assets/image/shop/'.$online_store->logo)}}"
+                                             src="{{asset($online_store->logo)}}"
                                              alt="pro-img1"></a>
                                 </div>
                                 <a href="/chains/" class="pro-icn d-block">

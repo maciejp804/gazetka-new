@@ -27,7 +27,8 @@ return new class extends Migration
             $table->decimal('rate', 3,2);
             $table->integer('votes');
             $table->integer('offers');
-            $table->string('logo');
+            $table->string('logo')->default('assets/image/store/biedronka.png');
+            $table->string('leaflet_logo')->default('assets/image/store/biedronka-69.png');
             $table->boolean('is_online');
             $table->timestamps();
         });

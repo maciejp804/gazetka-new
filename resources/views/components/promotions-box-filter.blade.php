@@ -25,7 +25,7 @@
                             </div>
                             <div class="caption text-center">
                                 <img class="img-fluid img_s6n7ag"
-                                     src="{{asset('assets/image/shop/'.$item->store->logo)}}"
+                                     src="{{asset($item->store->logo)}}"
                                      alt="pro-img1">
                                 <h3 class="text-black"><a href="/promotion/{{ $item->slug }}/"
                                                           class="a_ctv6kx">{{monthReplace($item->start_offer_date, 'd-m')}} - {{monthReplace($item->end_offer_date)}}</a></h3>

@@ -1683,6 +1683,7 @@ button.navbar-toggler span.line::after {
 .h-t-products1 .trending-products123 .owl-nav button,
 .home-category.owl-carousel .owl-nav button,
 .h-t-products1 .trending-products .owl-nav button,
+.h-t-products1 .blog-leaflet-slider .owl-nav button,
 .testimonial-bg1 .testi-m .owl-nav button {
     position: absolute;
     bottom: 64%;
@@ -1717,6 +1718,7 @@ button.navbar-toggler span.line::after {
 
 .home-category.owl-carousel .owl-nav button:hover,
 .h-t-products1 .trending-products .owl-nav button:hover,
+.h-t-products1 .blog-leaflet-slider .owl-nav button:hover,
 .testimonial-bg1 .testi-m .owl-nav button:hover {
     background-color: #fff;
     color: #007ABB;
@@ -1724,36 +1726,43 @@ button.navbar-toggler span.line::after {
 
 .home-category.owl-carousel .owl-nav button.owl-prev,
 .h-t-products1 .trending-products .owl-nav button.owl-prev,
+.h-t-products1 .blog-leaflet-slider .owl-nav button.owl-prev,
 .testimonial-bg1 .testi-m .owl-nav button.owl-prev {
     left: 10px;
 }
 
 .home-category.owl-carousel .owl-nav button.owl-next,
 .h-t-products1 .trending-products .owl-nav button.owl-next,
+.h-t-products1 .blog-leaflet-slider .owl-nav button.owl-next,
 .testimonial-bg1 .testi-m .owl-nav button.owl-next {
     right: 10px;
 }
 
 .h-t-products1 .trending-products123 .owl-nav button,
 .h-t-products1 .trending-products .owl-nav button,
+.h-t-products1 .blog-leaflet-slider .owl-nav button,
 .testimonial-bg1 .testi-m .owl-nav button {
     opacity: 1;
     visibility: visible;
 }
 
 .h-t-products1 .trending-products .owl-nav button:hover,
+.h-t-products1 .blog-leaflet-slider .owl-nav button:hover,
 .testimonial-bg1 .testi-m .owl-nav button:hover {
     background-color: #fff;
     color: #007ABB;
     box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.1);
 }
 
-.h-t-products1 .trending-products .owl-nav button.owl-prev, .h-t-products1 .trending-products123 .owl-nav button.owl-prev,
+.h-t-products1 .trending-products .owl-nav button.owl-prev,
+.h-t-products1 .blog-leaflet-slider .owl-nav button.owl-prev,
+.h-t-products1 .trending-products123 .owl-nav button.owl-prev,
 .testimonial-bg1 .testi-m .owl-nav button.owl-prev {
     left: -10px;
 }
 
 .h-t-products1 .trending-products123 .owl-nav button.owl-next,
+.h-t-products1 .blog-leaflet-slider .owl-nav button.owl-next,
 .h-t-products1 .trending-products .owl-nav button.owl-next,
 .testimonial-bg1 .testi-m .owl-nav button.owl-next {
     right: -10px;
@@ -15616,3 +15625,28 @@ a.responsive-collapse span {
 .owl-carousel .owl-item img {
     margin-top: 0px !important;
 }
+
+#sidebar {
+    margin-top: 150px;
+    height: 100%;
+    width: 20%;
+    float: left;
+    overflow-y: auto;
+    background-color: #f0f0f0;
+}
+
+#marker-list {
+    list-style: none;
+    padding: 0;
+}
+
+.marker-item {
+    cursor: pointer;
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+.marker-item:hover {
+    background-color: #e0e0e0;
+}
+

@@ -15,4 +15,9 @@ class Blog extends Model
     {
         return $this->belongsTo(CategoryArticle::class,'category_article_id', 'id');
     }
+
+    public function sliders()
+    {
+        return $this->hasMany(Slider::class);
+    }
 }

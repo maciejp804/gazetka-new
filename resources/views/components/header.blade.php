@@ -156,7 +156,7 @@
                                             </a>
                                         </li>
                                         <li class="menu-link li_lka7a9">
-                                            <a href="/blogs/" class="link-title a_b70zm8">
+                                            <a href="/abc-zakupowicza/" class="link-title a_b70zm8">
                                                 <span class="sp-link-title span_zhao3d">Abc zakupowicza</span>
                                             </a>
                                         </li>
@@ -173,7 +173,7 @@
                                             <img src="{{asset('assets/image/pro/image 9.png')}}">
                                         </li>
                                         <li class="menu-lin text-center li_y3xwpz">
-                                            <p class="p_q7oycr">2022 © Gazetkapromocyjna.com.pl. Wszelkie prawa zastrzeżone
+                                            <p class="p_q7oycr">{{date('Y', strtotime('now'))}} © Gazetkapromocyjna.com.pl. Wszelkie prawa zastrzeżone
                                                 <!-- -->
                                             </p>
                                         </li>
