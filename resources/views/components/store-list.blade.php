@@ -11,13 +11,14 @@
             <div class="corsatable">
                 @foreach($markers as $marker)
                 <div class="corsa-line">
-                    <p class="firstElement elem-corsa">{{$marker->stores->name}}, {{$place->name}}, {{$marker->address}}</p>
+                    <p class="firstElement elem-corsa">{{$marker->stores->name ?? ''}}, {{$marker->places->name}}, {{$marker->address}}</p>
                     <p class="secondElement elem-corsa">
+
                         @if(date('N') <= 5)
                             {{$marker->weekdays}}
-                        @elseif($weekday == 6)
-                            {{$marker->saturaday}}
-                        @elseif($weekday == 7)
+                        @elseif(date('N') == 6)
+                            {{$marker->saturday}}
+                        @elseif(date('N') == 7)
                             {{$marker->sunday}}
                         @endif</p>
                     <p class="thirdElement elem-corsa">Sprawdź na mapie</p></div>

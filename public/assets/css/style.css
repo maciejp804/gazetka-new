@@ -3823,6 +3823,9 @@ a.scroll:hover span {
     font-weight: 600;
     text-align: center;
 }
+.faqs-area p{
+    margin: 10px 0 !important;
+}
 
 .faq-box {
     display: flex;

@@ -10,13 +10,13 @@
             <div class="col">
                 <div class="owl-carousel trending-products rated_products owl-theme">
 
-                    @foreach($online as $online_store)
+                    @foreach($items as $item)
                         <div class="items">
                             <div class="tred-pro div_21j57g">
                                 <div class="tr-pro-img member">
                                     <a href="#">
                                         <img class="img-fluid img_rkb1s"
-                                             src="{{asset($online_store->logo)}}"
+                                             src="{{asset($item->logo)}}"
                                              alt="pro-img1"></a>
                                 </div>
                                 <a href="/chains/" class="pro-icn d-block">
@@ -29,9 +29,9 @@
                                 </a>
                             </div>
                             <div class="caption text-center"><h3 class="text-black"><a href="/chains/"
-                                                                                       class="a_zff5b1">{{ $online_store->name }}</a>
+                                                                                       class="a_zff5b1">{{ $item->name }}</a>
                                 </h3>
-                                <div class="pro-price div_fupn4y"><span class="old-price">ofert {{ $online_store->offers }}</span></div>
+                                <div class="pro-price div_fupn4y"><span class="old-price">ofert {{ $item->offers }}</span></div>
                             </div>
                         </div>
                     @endforeach

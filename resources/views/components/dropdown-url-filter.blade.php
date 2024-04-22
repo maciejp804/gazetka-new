@@ -69,7 +69,7 @@
                                          @if($item->name === $category->name)
                                          new
                                          @endif
-                                        " href="/{{$categoryPath.'-'.$item->slug.','.$item->category_index}}/">{{$item->name}}</a>
+                                        " href="/{{$categoryPath.'-'.$item->slug.','.$item->category_index}}/{{$placeSlug}}">{{$item->name}}</a>
                                     @endforeach
                                 </div>
                             </div>
@@ -78,15 +78,23 @@
                 </div>
         <form class="col-md-8 d-flex justify-content-around align-items-baseline" id="id_filter">
 
+            <input type="hidden" value="{{$route}}" name="route">
             <input type="hidden" value="{{$category->category_index}}" name="category">
             <div class="col-md-6">
                 <div class="header-main-area div_k6ou7a">
                     <div class="header-main">
                         <div class="header-element search-wrap div_kdhdcb">
                             <select name="sort" class="select" id="id_sort">
+                                @if($route == 'leafletLocal' or $route == 'leaflet')
                                 <option value="0">Sortuj wg: Najnowsze</option>
                                 <option value="1">Sortuj wg: Nadchodzące</option>
                                 <option value="2">Sortuj wg: Kończące się</option>
+                                @endif
+                                @if($route == 'chainLocal' or $route == 'chain')
+                                        <option value="3">Sortuj wg: A - Z</option>
+                                        <option value="4">Sortuj wg: Z - A</option>
+                                        <option value="5">Sortuj wg: Popularne</option>
+                                @endif
                             </select>
                         </div>
                     </div>

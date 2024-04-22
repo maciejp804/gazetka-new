@@ -7,6 +7,8 @@
     </x-slot:meta_description>
 
 
+    <x-header/>
+
     <section class="slider mt-4 desktop-only set_center">
         <div class="container cont_set">
             <h1 class="margins_set_title h1_g29nbe"><b>ABC zakupowicza</b></h1>
@@ -130,4 +132,5 @@
             </div>
         </div>
     </div>
+    <x-footer/>
 </x-layout.layout>

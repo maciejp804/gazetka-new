@@ -4,7 +4,22 @@
   flex-wrap: wrap;
 }
 .shops-flexbox .items {
-  width: 18%;
+  width: calc(20% - 20px);
+}
+@media (max-width: 1300px) {
+  .shops-flexbox .items {
+    width: calc(25% - 20px);
+  }
+}
+@media (max-width: 1000px) {
+  .shops-flexbox .items {
+    width: calc(33% - 20px);
+  }
+}
+@media (max-width: 768px) {
+  .shops-flexbox .items {
+    width: calc(50% - 20px);
+  }
 }
 .shops-flexbox .items .tred-pro {
   width: 100%;
@@ -71,8 +86,6 @@
 .faq-start .collapse-content p {
   margin-top: 14px;
   white-space: pre-line;
-    padding-left: 20px;
-    font-size: 14px;
 }
 
 .box-set-bottom {

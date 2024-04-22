@@ -2,9 +2,17 @@
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
-
   .items {
-    width: 18%;
+  width: Calc(20% - 20px);
+      @media (max-width: 1300px) {
+          width: Calc(25% - 20px);;
+      }
+      @media (max-width: 1000px) {
+          width: Calc(33% - 20px);;
+      }
+      @media (max-width: 768px) {
+          width: Calc(50% - 20px);;
+      }
 
     .tred-pro {
       width: 100%;

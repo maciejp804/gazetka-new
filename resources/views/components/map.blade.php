@@ -55,7 +55,7 @@
         '<div class="infobox-image"><a href="https://{{$marker->stores->subdomain}}.gazetkapromocyjna.com.pl/{{$place->slug}}/">' +
         '<img src="{{asset('assets/image/store/'.$marker->stores->subdomain)}}-69.png"/></a></div>' +
         '<a href="https://{{$marker->stores->subdomain}}.'+
-        'gazetkapromocyjna.com.pl/godziny-otwarcia/{{$place->slug}}-{{$marker->slug}},{{$marker->id}}/">{{$marker->address}} <br/><br/>{{$place->name}}<br/></a>' +
+        'gazetkapromocyjna.com.pl/godziny-otwarcia/{{$place->slug}}-{{$marker->slug}},{{$marker->id}}/">{{$marker->address}} <br/><br/>{{$marker->places->name ?? ''}}<br/><br/>{{round($marker->distance, 2)}} km od Ciebie <br/></a>' +
         '@endif' +
         '<div class="open-houers"><span>Godziny otwarcia:</span><br/>' +
         '<span class="' +

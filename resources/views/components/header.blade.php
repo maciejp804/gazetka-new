@@ -14,12 +14,12 @@
                                 <div class="mainwrap">
                                     <ul class="main-menu class_dir ul_ksesuz">
                                         <li class="menu-link">
-                                            <a href="/gazetki-promocyjne-wszystkie,0/" class="link-title a_b5qe3x">
+                                            <a href="/gazetki-promocyjne-wszystkie,0/{{$placeSlug}}" class="link-title a_b5qe3x">
                                                 <span class="sp-link-title font_set span_5ep6sl">Gazetki promocyjne</span>
                                             </a>
                                         </li>
                                         <li class="menu-link">
-                                            <a href="/sieci-handlowe-wszystkie,0/" class="link-title a_zm5sac">
+                                            <a href="/sieci-handlowe-wszystkie,0/{{$placeSlug}}" class="link-title a_zm5sac">
                                                 <span class="sp-link-title font_set span_h2yd0u">Sieci handlowe</span>
                                             </a>
                                         </li>
@@ -146,12 +146,12 @@
                                     </ul>
                                     <ul class="main-menu ul_zwgq0z">
                                         <li class="menu-link li_ko3s82">
-                                            <a href="/gazetki-promocyjne-wszystkie,0/" class="link-title a_d99cny">
+                                            <a href="/gazetki-promocyjne-wszystkie,0/{{$placeSlug}}" class="link-title a_d99cny">
                                                 <span class="sp-link-title span_tr1l77">Gazetki promocyjne</span>
                                             </a>
                                         </li>
                                         <li class="menu-link li_ywpzh8">
-                                            <a href="/sieci-handlowe-wszystkie,0/" class="link-title a_3cgpxm">
+                                            <a href="/sieci-handlowe-wszystkie,0/{{$placeSlug}}" class="link-title a_3cgpxm">
                                                 <span class="sp-link-title span_c5t2wg">Sieci handlowe</span>
                                             </a>
                                         </li>

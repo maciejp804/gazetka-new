@@ -1,6 +1,6 @@
 <section class="category-img1 section-t-padding section-b-padding section_9omfb6">
     <div class="container">
-        <div class="section-title3"><h2 class="desktop-only"><span>Gazetki promocyjne w największych polskich miastach</span>
+        <div class="section-title3"><h2 class="desktop-only"><span>{{$places->title}}</span>
             </h2>
         </div>
         <div class="">

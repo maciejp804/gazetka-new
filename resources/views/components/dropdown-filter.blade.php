@@ -13,13 +13,14 @@
 <section class="category-img1 section-t-padding section-b-padding section_q2vymy" style="padding-bottom: 20px">
     <div class="container">
         <form class="row" id="id_filter">
+            <input type="hidden" value="{{$route}}" name="route">
             <div class="col-md-4">
                 <div class="header-main-area div_j18kep">
                     <div class="header-main">
                         <div class="header-element search-wrap div_xgmv7r">
                             <select name="category" class="select" required id="id_category">
-                                @foreach($leafletCategories as $leaftetategory)
-                                    <option value="{{$leaftetategory->category_index}}">{{$leaftetategory->name}}</option>
+                                @foreach($categories as $category)
+                                    <option value="{{$category->category_index}}">{{$category->name}}</option>
                                 @endforeach
                             </select>
                         </div>

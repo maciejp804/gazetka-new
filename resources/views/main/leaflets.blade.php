@@ -5,9 +5,11 @@
     <x-slot:meta_description>
         {{$metaDescription}}
     </x-slot:meta_description>
+    <x-header :placeSlug="$placeSlug"/>
+
     <section class="slider mt-4 desktop-only set_center">
         <div class="container cont_set">
-            <h1 class="margins_set_title h1_g29nbe">Gazetki <b>promocyjne</b> z kategorii {{$leafletCategory->name}}</h1>
+            <h1 class="margins_set_title h1_g29nbe">{!! $h1Title !!}</h1>
         </div>
     </section>
     <div class="container mob-only">
@@ -22,7 +24,7 @@
     </div>
 
     <section class="slider mt-4 mob-only box-blue">
-        <h1 class="box-fonts h1_uzsvpc">Gazetki <b>promocyjne</b> z kategorii {{$leafletCategory->name}}</h1>
+        <h1 class="box-fonts h1_uzsvpc">{!! $h1Title !!}</h1>
     </section>
 
     <div class="col-md-3 mob-only box-gray"><span class="align_centers">REKLAMA</span></div>
@@ -34,18 +36,24 @@
         </div>
     </section>
     <x-dropdown-header/>
-    <x-dropdown-url-filter :categories="$leafletCategories" :category="$leafletCategory" :categoryPath="$leafletCategoryPath"/>
+    <x-dropdown-url-filter :categories="$leafletCategories" :category="$leafletCategory" :categoryPath="$leafletCategoryPath" :placeSlug="$placeSlug" :route="$route"/>
     <div id="promotions-box">
-        <x-promotions-box-filter :items="$leaflets"/>
+        <x-promotions-box-filter :items="$leaflets" :route="$route"/>
     </div>
-    <x-slider-category :categories="$leafletCategories" :leafletCategoryPath="$leafletCategoryPath"/>
+    <x-slider-category :items="$leafletCategories" :slug="$leafletCategoryPath" :placeSlug="$placeSlug"/>
     <x-most-products-slider :products="$products"/>
 
-    @if(!$pageDescriptions->isEmpty())
-        <x-description :items="$pageDescriptions"/>
-    @endif
-    @if(!$pageQuestions->isEmpty())
-        <x-faq :items="$pageQuestions"/>
-    @endif
-    <x-newsletter/>
+@if($pageDescription !== null)
+   <x-description :items="$pageDescription"/>
+@endif
+
+@if($descCollection->questions->isNotEmpty())
+   <x-faq :items="$descCollection->questions"/>
+@endif
+
+<x-newsletter/>
+<x-footer/>
+<x-slot:route>
+   {{$route}}
+</x-slot:route>
 </x-layout.layout>

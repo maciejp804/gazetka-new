@@ -20,23 +20,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/',[StoreController::class, 'index']);
+Route::get('/',[StoreController::class, 'index'])->name('home');
 
 Route::post('/filter', [AjaxController::class, 'leafletAjax']);
+Route::get('/location', [AjaxController::class, 'location']);
+
+Route::get('/gazetki-promocyjne-{slug},{leaflet_category_id}/{place}', [LeafletController::class, 'indexLocalisation'])
+    ->whereNumber('leaflet_category_id')->name('leafletLocal');
 
 Route::get('/gazetki-promocyjne-{slug},{leaflet_category_id}/', [LeafletController::class, 'index'])
-    ->whereNumber('leaflet_category_id');
+    ->whereNumber('leaflet_category_id')->name('leaflet');
+
+
 
 Route::get('/sieci-handlowe-{slug},{store_category_id}', [ChainController::class, 'index'])
-    ->whereNumber('store_category_id');
+    ->whereNumber('store_category_id')->name('chain');
 
-Route::get('abc-zakupowicza',[BlogController::class, 'index']);
+Route::get('/sieci-handlowe-{slug},{store_category_id}/{place}', [ChainController::class, 'indexLocalisation'])
+    ->whereNumber('store_category_id')->name('chainLocal');
 
-Route::get('abc-zakupowicza/{slug}/',[BlogController::class, 'showByCategory']);
+Route::get('abc-zakupowicza',[BlogController::class, 'index'])->name('blog');
 
-Route::get('abc-zakupowicza/{category_slug}/{blog_slug}',[BlogController::class, 'show']);
+Route::get('abc-zakupowicza/{slug}/',[BlogController::class, 'showByCategory'])->name('postCategory');
 
-Route::get('/{slug}/',[StoreController::class, 'indexLocalisation']);
+Route::get('abc-zakupowicza/{category_slug}/{blog_slug}',[BlogController::class, 'show'])->name('post');
+
+Route::get('/{place}/',[StoreController::class, 'indexLocalisation'])->name('homeLocal');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

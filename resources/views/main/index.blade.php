@@ -7,14 +7,11 @@
     <x-slot:meta_description>
         {{$metaDescription}}
     </x-slot:meta_description>
+    <x-header :placeSlug="$placeSlug ?? '' "/>
+
     <section class="slider mt-4 desktop-only set_center">
         <div class="container cont_set">
-            <h1 class="margins_set_title h1_g29nbe">Wszystkie gazetki promocyjne
-
-                @if(isset($place))
-                    z  {{$place->name_genitive}}
-                @endif
-                w <b>jednym miejscu</b></h1>
+            <h1 class="margins_set_title h1_g29nbe">{!!$h1Title!!}</h1>
         </div>
     </section>
     <div class="container mob-only">
@@ -29,11 +26,7 @@
     </div>
 
     <section class="slider mt-4 mob-only box-blue">
-        <h1 class="box-fonts h1_uzsvpc">Wszystkie gazetki promocyjne
-            @if(isset($place))
-              z  {{$place->name_genitive}}
-            @endif
-            w <b>jednym miejscu</b></h1>
+        <h1 class="box-fonts h1_uzsvpc">{!!$h1Title!!}</h1>
     </section>
 
     <div class="col-md-3 mob-only box-gray"><span class="align_centers">REKLAMA</span></div>
@@ -46,29 +39,28 @@
         </div>
     </section>
 
-    <x-promotions-slider :items="$leaflets_promo" :place="$place ?? null" :title="$leafletsPromoTitle"/>
+    <x-promotions-slider :items="$leafletsPromo" :title="$leafletsPromoTitle" :placeSlug="$placeSlug"/>
 
     <x-info-slider/>
 
-    <x-commercial-networks-slider :stores="$stores" :place="$place ?? null" />
+    <x-commercial-networks-slider :items="$stores" :title="$storesTitle" :slug="$storesSlug" :placeSlug="$placeSlug"/>
 
+    @if($placeDescription !== null)
+        <x-place-description :placeDescription=" $placeDescription" :place="$place"/>
+    @endif
     <x-most-products-slider :products="$products"/>
 
-    <x-commercial-online :online="$online"/>
-
-
-    <x-slider-category :categories="$category_stores" :leafletCategoriesHeader="$leafletCategoriesHeader" :leafletCategoryPath="$leafletCategoryPath"/>
-
-    @if(!isset($place))
-        <x-largest-cities :places="$places"/>
-    @elseif($placeDescription !== null)
-
-        <x-place-description :placeDescription="$placeDescription" :place="$place"/>
-    @endif
     @if(isset($markers))
         <x-store-list :place="$place" :markers="$markersInZone" :weekday="$weekday"/>
         <x-map :place="$place" :markers="$markers"/>
     @endif
+
+    <x-commercial-networks-slider :items="$onlineStores" :title="$onlineStoresTitle" :slug="$onlineStoresSlug" :placeSlug="$placeSlug"/>
+
+    <x-slider-category :items="$categoryStores" :title="$categoryStoresTitle" :slug="$leafletCategoryPath" :placeSlug="$placeSlug"/>
+
+
+    <x-largest-cities :places="$places"/>
 
     <x-vouchers-slider :vouchers="$vouchers"/>
 
@@ -76,11 +68,11 @@
     <div class="col-md-6 mt-4 rek-box"><span class="span_gftdgc">REKLAMA</span></div>
 
 
-    <x-dropdown-filter :leafletCategories="$leafletCategories"/>
+    <x-dropdown-filter :categories="$leafletCategories" :route="$route"/>
 
     <div id="promotions-box">
 
-        <x-promotions-box-filter :items="$leaflets"/>
+        <x-promotions-box-filter :items="$leaflets" :route="$route"/>
 
         <div class="all-blog text-center mt-4">
             <a href="/promotions/" class="btn btn-style1 a_homzsp">Pokaż więcej</a>
@@ -91,17 +83,20 @@
 
     <div class="col-md-6 mt-4 rek-box set_rek"><span class="rek_margin">REKLAMA</span></div>
     <x-about-us/>
-    @if(!$pageDescriptions->isEmpty())
-    <x-description :items="$pageDescriptions"/>
+    @if($pageDescription !== null)
+    <x-description :items="$pageDescription"/>
     @endif
 
 
 
-    @if(!$pageQuestions->isEmpty())
-        <x-faq :items="$pageQuestions"/>
+    @if($descCollection->questions->isNotEmpty())
+        <x-faq :items="$descCollection->questions"/>
     @endif
        <x-newsletter/>
 
-
+    <x-footer/>
+    <x-slot:route>
+        {{$route}}
+    </x-slot:route>
 </x-layout.layout>
 

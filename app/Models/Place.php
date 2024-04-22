@@ -13,7 +13,7 @@ class Place extends Model
 
     public function voivodeship()
     {
-        return $this->belongsTo(Voivodeship::class, 'voivodeship_id', 'voivodeship_id');
+        return $this->belongsTo(Voivodeship::class);
     }
 
     public function stores()

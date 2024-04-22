@@ -56,11 +56,8 @@
 <body>
 <div id="__next">
     <div class="App">
-        @include('/components.header')
 
         {{$slot}}
-
-        @include('/components.footer')
 
     </div>
 </div>
@@ -90,7 +87,23 @@
             date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
             expires = "; expires=" + date.toUTCString();
         }
-        document.cookie = name + "=" + value + expires + "; path=/";
+        document.cookie = name + "=" + value + expires + "; path=/; secure; SameSite=Lax";
+    }
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
     }
 
     function toggleLang() {
@@ -115,19 +128,68 @@
     function select_location() {
         $.ajax({
             headers: {
-                "X-CSRFToken": "5FBEJRr0dG5wLJ6zZiDHJLemaLX5kKUgXzEOhnzR0NoKJQdztYx6mzhKHhAFN7Fn"
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            type: 'post',
-            url: "/location/",
-            data: {},
+            type: 'get',
+            url: "/location",
+            data: { parametr: '{{$route}}' }, // Przekazanie nazwy trasy
             success: function (data) {
-                location.reload();
+                window.location.href = data.url;
             }
         });
     }
 
 
 </script>
+
+<script>
+    var geo = getCookie('geolocation');
+    if (!getCookie('local')) {
+        if (navigator.geolocation) {
+            navigator.permissions.query({ name: 'geolocation' }).then(permissionStatus => {
+                if (permissionStatus.state === 'granted') {
+                    // Użytkownik zezwolił na lokalizację
+                    navigator.geolocation.getCurrentPosition(currentPosition, error_callback);
+                } else if (permissionStatus.state === 'prompt') {
+                    // Użytkownik nie podjął jeszcze decyzji, możesz wyświetlić prośbę o zezwolenie na lokalizację
+                    // Możesz również wywołać funkcję getCurrentPosition() bez warunku, aby pokazać standardowe okno dialogowe przeglądarki
+                    navigator.geolocation.getCurrentPosition(currentPosition, error_callback);
+                } else {
+                    error_callback(error);
+                    // Użytkownik odmówił dostępu do lokalizacji, możesz obsłużyć tę sytuację odpowiednio
+                }
+            }).catch(console.error);
+        } else {
+            console.log("Twoja przeglądarka nie obsługuje Geolokalizacji HTML5.");
+        }
+    } else {
+        console.log("Ciasteczko z danymi geolokalizacji już istnieje.");
+    }
+
+    function currentPosition(position) {
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                var myObj = JSON.parse(this.responseText);
+                var state = myObj.address.state.split(' ');
+                var jsonData = {"place" : myObj.address.city, "district" : state[1], 'lat': myObj.lat, 'lng' : myObj.lon};
+                var jsonString = JSON.stringify(jsonData);
+                setCookie('local',jsonString, 30);
+                setCookie('geolocation','on', 30);
+            }
+        };
+        xmlhttp.open("GET", "https://eu1.locationiq.com/v1/reverse.php?key=1a3ae45052e8cd&lat=" + latitude + "&lon=" + longitude + "&format=json&normalizecity=1", true);
+        xmlhttp.send();
+    }
+
+    function error_callback(error) {
+        setCookie('geolocation','off', 1);
+    }
+
+</script>
+
 <script>
 
     $('#id_category').on('change', () => {

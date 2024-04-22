@@ -16,4 +16,9 @@ class Map extends Model
     {
         return $this->hasOne(Store::class, 'id','store_id');
     }
+
+    public function places()
+    {
+        return $this->hasOne(Place::class, 'id', 'place_id');
+    }
 }
