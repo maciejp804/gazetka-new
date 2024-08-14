@@ -13,6 +13,9 @@ class Product extends Model
 
     protected $guarded = [];
 
+    // Zakładam, że tabela 'products' ma kolumnę 'name' dla nazwy produktu
+    protected $fillable = ['name'];
+
     public function leaflets(): BelongsToMany
     {
         return $this->belongsToMany(Leaflet::class, 'leaflets_products', 'product_id', 'leaflet_id');

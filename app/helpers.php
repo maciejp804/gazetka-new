@@ -220,4 +220,39 @@ if (! function_exists('storesLocation')) {
     }
 }
 
+if (! function_exists('getScrapedContent')) {
+    function getScrapedContent($offerUrl)
+    {
+        $key = env('SCRAPER_API_KEY');
+        $url = "https://api.scraperapi.com/?api_key=".$key."&url=$offerUrl";
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_HEADER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        return $response;
+
+    }
+}
+
+
+if (! function_exists('getScrapedContentOwn')) {
+    function getScrapedContentOwn($offerUrl)
+    {
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $offerUrl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        dd($response);
+    }
+}
 

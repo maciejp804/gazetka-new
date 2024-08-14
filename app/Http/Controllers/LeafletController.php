@@ -150,7 +150,7 @@ class LeafletController extends Controller
         $page_descriptions = $descriptions->descriptions->where('place','=','bottom');
         $place_descriptions = $descriptions->descriptions->where('place', 'middle')->first();*/
 
-        return view('main.leaflets', data: [
+        return view('main.leaflets.index', data: [
 
             //meta
             'metaTitle' => $metaTitle,
@@ -309,7 +309,7 @@ class LeafletController extends Controller
 
 
 
-        return view('main.leaflets', data: [
+        return view('main.leaflets.index', data: [
             //meta
             'metaTitle' => $metaTitle,
             'metaDescription' => $metaDescription,
@@ -334,6 +334,26 @@ class LeafletController extends Controller
 
             'placeSlug' => $placeSlug,
             'route' => Route::currentRouteName(),
+        ]);
+    }
+    public function edit($slug=null)
+    {
+        $chains = Store::all();
+        return view('main.leaflets.edit', data:
+            [
+                'data' => '',
+                'chain' => $slug,
+                'image' => '',
+            ]);
+    }
+    public function clickableIndex($slug=null)
+    {
+
+        return view('main.leaflets.clickableIndex', data:
+        [
+            'data' => '',
+            'chain' => $slug,
+            'image' => '',
         ]);
     }
 }

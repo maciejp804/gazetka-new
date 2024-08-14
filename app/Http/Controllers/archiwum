@@ -1,0 +1,550 @@
+class OcrController extends Controller
+{
+    private $lemmas;
+    private $stopwords;
+
+    public function __construct()
+    {
+        $this->lemmas = json_decode(file_get_contents(storage_path('lematyzacja.json')), true);
+        $this->stopwords = json_decode(file_get_contents(storage_path('stopwords.json')), true);
+    }
+
+    private function lemmatize($word)
+    {
+        $word = mb_strtolower($word);
+        if (strpos($word, '-') !== false) {
+            $parts = explode('-', $word);
+            $lemmatizedParts = array_map(function ($part) {
+                return $this->lemmas[$part] ?? $part;
+            }, $parts);
+            return implode('-', $lemmatizedParts);
+        }
+        return $this->lemmas[$word] ?? $word;
+    }
+
+    private function removeStopwords($text)
+    {
+        $words = explode(' ', $text);
+        $filteredWords = array_filter($words, function ($word) {
+            return !in_array(mb_strtolower($word), $this->stopwords);
+        });
+        return implode(' ', $filteredWords);
+    }
+
+    private function preprocessTextArray($texts)
+    {
+        return array_map([$this, 'preprocessText'], $texts);
+    }
+
+    private function preprocessText($text)
+    {
+        $text = $this->removePunctuation(mb_strtolower($text));
+        $text = $this->removeStopwords($text);
+        return $this->lemmatizeText($text);
+    }
+
+    private function lemmatizeText($text)
+    {
+        $words = explode(' ', $text);
+        $lemmatizedWords = array_map([$this, 'lemmatize'], $words);
+        return implode(' ', $lemmatizedWords);
+    }
+
+    private function sortOcrResults($ocrResults)
+    {
+        usort($ocrResults, function($a, $b) {
+            return $a['top'] - $b['top'];
+        });
+        return $ocrResults;
+    }
+
+    private function groupLinesByProximity($ocrResults, $baseThreshold = 30, $heightMultiplier = 0.5, $leftThreshold = 20)
+    {
+        $products = [];
+        $currentProduct = [];
+        $lastTop = null;
+        $lastLeft = null;
+        $lastHeight = null;
+
+        foreach ($ocrResults as $line) {
+            if ($lastTop !== null) {
+                $dynamicThreshold = $baseThreshold + ($lastHeight * $heightMultiplier);
+                if (abs($line['top'] - $lastTop) > $dynamicThreshold || abs($line['left'] - $lastLeft) > $leftThreshold) {
+                    $products[] = implode(' ', array_column($currentProduct, 'LineText'));
+                    $currentProduct = [];
+                }
+            }
+            $currentProduct[] = $line;
+            $lastTop = $line['top'];
+            $lastLeft = $line['left'];
+            $lastHeight = $line['height'];
+        }
+
+        if (!empty($currentProduct)) {
+            $products[] = implode(' ', array_column($currentProduct, 'LineText'));
+        }
+
+        return $products;
+    }
+
+    private function matchProducts($ocrTexts, $products, $threshold = 90)
+    {
+        $matches = [];
+        foreach ($ocrTexts as $text) {
+            $ngrams = $this->generateNgrams($text, 2); // Generowanie bigramów
+            foreach ($products as $product) {
+                foreach ($ngrams as $ngram) {
+                    $score = $this->calculateLevenshteinSimilarity($ngram, $product['name']);
+                    if ($score >= $threshold) {
+                        $matches[] = [
+                            'OCR Text' => $text,
+                            'Matched Product' => $product['name'],
+                            'Product ID' => $product['id'],
+                            'Similarity' => $score
+                        ];
+                    } /*elseif ($score < $threshold && $score > 50) {
+                        $matches[] = [
+                            'OCR Text' => $text,
+                            'Matched Product' => $product['name'],
+                            'Product ID' => $product['id'],
+                            'Similarity' => $score
+                        ];
+                    }*/
+                }
+            }
+        }
+        return $matches;
+    }
+
+    private function generateNgrams($text, $n = 2)
+    {
+        $words = explode(' ', $text);
+        $ngrams = [];
+        $count = count($words);
+        for ($i = 0; $i <= $count - $n; $i++) {
+            $ngrams[] = implode(' ', array_slice($words, $i, $n));
+        }
+        return $ngrams;
+    }
+
+    private function calculateLevenshteinSimilarity($text1, $text2)
+    {
+        $s1 = $this->normalizeText($this->removePunctuation(mb_strtolower($text1)));
+        $s2 = $this->normalizeText($this->removePunctuation(mb_strtolower($text2)));
+
+        $levenshteinDistance = levenshtein($s1, $s2);
+        $maxLength = max(strlen($s1), strlen($s2));
+
+        if ($maxLength == 0) {
+            return 100;
+        }
+
+        return (1 - $levenshteinDistance / $maxLength) * 100;
+    }
+
+    private function removePunctuation($text)
+    {
+        return preg_replace('/[^\p{L}\p{N}\s-]/u', '', $text);
+    }
+
+    private function normalizeText($text)
+    {
+        return trim(preg_replace('/\s+/', ' ', $text));
+    }
+
+    public function processOcr(Request $request)
+    {
+        set_time_limit(300); // Ustawienie maksymalnego czasu wykonania na 300 sekund
+        $file = $request->file('pdfFile');
+        $fileName = $file->getClientOriginalName();
+        $fileExtension = $file->getClientOriginalExtension();
+
+        $filePath = storage_path('app/public/pdf/' . $fileName);
+        $file->move(storage_path('app/public/pdf/'), $fileName);
+
+        if ($fileExtension == 'pdf') {
+            $fileData = fopen($filePath, 'r');
+            $client = new Client();
+            try {
+                $r = $client->request('POST', 'https://apipro2.ocr.space/parse/image', [
+                    'headers' => ['apiKey' => 'PD8Y8E1E9M0X'],
+                    'multipart' => [
+                        [
+                            'name' => 'file',
+                            'contents' => $fileData
+                        ],
+                        [
+                            'name' => 'language',
+                            'contents' => 'pol'
+                        ],
+                        [
+                            'name' => 'isOverlayRequired',
+                            'contents' => 'true'
+                        ],
+                    ]
+                ]);
+                $response = json_decode($r->getBody(), true);
+                fclose($fileData);
+            } catch (Exception $err) {
+                return response()->json(['error' => 'OCR API Error', 'message' => $err->getMessage()], 500);
+            }
+        } elseif ($fileExtension == 'json') {
+            $response = json_decode(file_get_contents($filePath), true);
+        } else {
+            return response()->json(['error' => 'Invalid file type. Only PDF and JSON are supported.'], 400);
+        }
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return response()->json(['error' => 'Invalid JSON', 'message' => json_last_error_msg()], 400);
+        }
+
+        if (empty($response)) {
+            return response()->json(['error' => 'Request data is empty', 'request' => $request->all()], 400);
+        }
+
+        if (!isset($response['ParsedResults'])) {
+            return response()->json(['error' => 'ParsedResults not found', 'requestData' => $response], 400);
+        }
+
+        $parsedResults = $response['ParsedResults'];
+
+        if (empty($parsedResults)) {
+            return response()->json(['error' => 'ParsedResults is empty', 'requestData' => $response], 400);
+        }
+
+        $allMatches = [];
+        $page = 1;
+        foreach ($parsedResults as $parsedResult) {
+            if (!isset($parsedResult['TextOverlay']['Lines'])) {
+                return response()->json(['error' => 'Lines not found in TextOverlay', 'parsedResult' => $parsedResult], 400);
+            }
+
+            $ocrResults = $parsedResult['TextOverlay']['Lines'];
+
+            foreach ($ocrResults as &$line) {
+                if (isset($line['Words'][0])) {
+                    $line['left'] = $line['Words'][0]['Left'];
+                    $line['top'] = $line['Words'][0]['Top'];
+                    $line['width'] = $line['Words'][0]['Width'];
+                    $line['height'] = $line['Words'][0]['Height'];
+                } else {
+                    $line['left'] = 0;
+                    $line['top'] = 0;
+                    $line['width'] = 0;
+                    $line['height'] = 0;
+                }
+
+                if (!isset($line['LineText'])) {
+                    $line['LineText'] = '';
+                }
+            }
+
+            $sortedOcrResults = $this->sortOcrResults($ocrResults);
+            $groupedOcrResults = $this->groupLinesByProximity($sortedOcrResults);
+            $groupedOcrResults = $this->preprocessTextArray($groupedOcrResults);
+
+            $oldProducts = DB::table('searcher')->get();
+
+            $productNames = $oldProducts->map(function ($product) {
+                return ['id' => $product->id, 'name' => $product->name_product];
+            })->toArray();
+
+            $productNames = array_map(function ($product) {
+                $product['name'] = $this->preprocessText($product['name']);
+                return $product;
+            }, $productNames);
+
+            $matches = $this->matchProducts($groupedOcrResults, $productNames);
+
+            foreach ($matches as &$match) {
+                $match['Page'] = $page;
+            }
+
+            $allMatches = array_merge($allMatches, $matches);
+            $page++;
+        }
+
+        return response()->json($allMatches);
+    }
+}
+
+<?php
+
+namespace App\Http\Controllers;
+
+use GuzzleHttp\Client;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+class OcrController extends Controller
+{
+    private $lemmas;
+    private $stopwords;
+
+    public function __construct()
+    {
+        $this->lemmas = json_decode(file_get_contents(storage_path('lematyzacja.json')), true);
+        $this->stopwords = json_decode(file_get_contents(storage_path('stopwords.json')), true);
+    }
+
+    private function lemmatize($word)
+    {
+        $word = mb_strtolower($word);
+        if(str_contains($word, '-')){
+            $parts = explode('-', $word);
+            $lemmatizedParts = array_map(function ($part) {
+                return $this->lemmas[$part] ?? $part;
+            }, $parts);
+            return implode('-', $lemmatizedParts);
+        }
+        return $this->lemmas[$word] ?? $word;
+    }
+
+    private function removeStopwords($text)
+    {
+        $words = explode(' ', $text);
+        $filteredWords = array_filter($words, function ($word) {
+            return !in_array(mb_strtolower($word), $this->stopwords);
+        });
+        return implode(' ', $filteredWords);
+    }
+
+    private function preprocessText($text)
+    {
+        $text = $this->removePunctuation(mb_strtolower($text));
+        $text = $this->removeStopwords($text);
+        return $this->lemmatizeText($text);
+    }
+
+    private function lemmatizeText($text)
+    {
+        $words = explode(' ', $text);
+        $lemmatizedWords = array_map([$this, 'lemmatize'], $words);
+        return implode(' ', $lemmatizedWords);
+    }
+
+    private function sortOcrResults($ocrResults)
+    {
+        usort($ocrResults, function($a, $b) {
+            return $a['top'] - $b['top'];
+        });
+        return $ocrResults;
+    }
+
+    private function groupLinesByProximity($ocrResults, $baseThreshold = 30, $heightMultiplier = 0.5, $leftThreshold = 20)
+    {
+        $products = [];
+        $currentProduct = [];
+        $lastTop = null;
+        $lastLeft = null;
+        $lastHeight = null;
+
+        foreach ($ocrResults as $line) {
+            if ($lastTop !== null) {
+                $dynamicThreshold = $baseThreshold + ($lastHeight * $heightMultiplier);
+                if (abs($line['top'] - $lastTop) > $dynamicThreshold || abs($line['left'] - $lastLeft) > $leftThreshold) {
+                    $products[] = implode(' ', array_column($currentProduct, 'LineText'));
+                    $currentProduct = [];
+                }
+            }
+            $currentProduct[] = $line;
+            $lastTop = $line['top'];
+            $lastLeft = $line['left'];
+            $lastHeight = $line['height'];
+        }
+
+        if (!empty($currentProduct)) {
+            $products[] = implode(' ', array_column($currentProduct, 'LineText'));
+        }
+
+        return $products;
+    }
+
+    private function matchProducts($ocrTexts, $products, $threshold = 95)
+    {
+        $matches = [];
+        foreach ($ocrTexts as $text) {
+            $ngrams = $this->generateNgrams($text, 2); // Generowanie bigramów
+            foreach ($products as $product) {
+                foreach ($ngrams as $ngram) {
+                    $score = $this->calculateLevenshteinSimilarity($ngram, $product);
+                    if ($score >= $threshold) {
+                        $matches[] = [
+                            'OCR Text' => $text,
+                            'Matched Product' => $product['name'],
+                            'Product ID' => $product['id'],
+                            'Similarity' => $score
+                        ];
+                    } /*elseif ($score < $threshold && $score > 50) {
+                        $matches[] = [
+                            'OCR Text' => $text,
+                            'Matched Product' => $product,
+                            'Similarity' => $score
+                        ];
+                    }*/
+                }
+            }
+        }
+        return $matches;
+    }
+
+    private function generateNgrams($text, $n = 2)
+    {
+        $words = explode(' ', $text);
+        $ngrams = [];
+        $count = count($words);
+        for ($i = 0; $i <= $count - $n; $i++) {
+            $ngrams[] = implode(' ', array_slice($words, $i, $n));
+        }
+        return $ngrams;
+    }
+
+    private function calculateLevenshteinSimilarity($text1, $text2)
+    {
+        $s1 = $this->normalizeText($this->removePunctuation(mb_strtolower($text1)));
+        $s2 = $this->normalizeText($this->removePunctuation(mb_strtolower($text2)));
+
+        $levenshteinDistance = levenshtein($s1, $s2);
+        $maxLength = max(strlen($s1), strlen($s2));
+
+        if ($maxLength == 0) {
+            return 100;
+        }
+
+        return (1 - $levenshteinDistance / $maxLength) * 100;
+    }
+
+    private function removePunctuation($text)
+    {
+        return preg_replace('/[^\p{L}\p{N}\s]/u', '', $text);
+    }
+
+    private function normalizeText($text)
+    {
+        return trim(preg_replace('/\s+/', ' ', $text));
+    }
+
+    public function processOcr(Request $request)
+    {
+        set_time_limit(300); // Ustawienie maksymalnego czasu wykonania na 300 sekund
+        $file = $request->file('pdfFile');
+        $fileName = $file->getClientOriginalName();
+        $fileExtension = $file->getClientOriginalExtension();
+
+      switch ($fileExtension) {
+          case 'pdf':
+              $fileNameJson = empty($fileName) ? null : str_replace($fileExtension, '',$fileName ) . 'json';
+              $filePath = storage_path('app/public/pdf/'.$fileName);
+              $file->move(storage_path('app/public/pdf/'), $fileName);
+
+              $fileData = fopen($filePath, 'r');
+              $client = new Client();
+              try {
+                  $r = $client->request('POST', 'https://apipro2.ocr.space/parse/image',[
+                      'headers' => ['apiKey' => 'PD8Y8E1E9M0X'],
+                      'multipart' => [
+                          [
+                              'name' => 'file',
+                              'contents' => $fileData
+                          ],
+                          [
+                              'name' => 'language',
+                              'contents' => 'pol'
+                          ],
+                          [
+                              'name' => 'isOverlayRequired',
+                              'contents' => 'true'
+                          ],
+                      ]
+                  ], ['file' => $fileData],
+                  );
+                  $response =  $r->getBody();
+                  $fileJson = fopen(storage_path('app/public/json/'.$fileNameJson), "w"); //zapisanie nowego id do pliku
+                  fwrite($fileJson, $response);
+                  fclose($fileJson);
+
+                  return $response;
+
+              }  catch(Exception $err) {
+                  header('HTTP/1.0 403 Forbidden');
+                  return $err->getMessage();
+              }
+
+          case 'json':
+
+              $requestData = json_decode($file->getContent(), true);
+
+
+              if (json_last_error() !== JSON_ERROR_NONE) {
+                  return response()->json(['error' => 'Invalid JSON', 'message' => json_last_error_msg()], 400);
+              }
+
+              if (empty($requestData)) {
+                  return response()->json(['error' => 'Request data is empty', 'request' => $request->all()], 400);
+              }
+
+              if (!isset($requestData['ParsedResults'])) {
+                  return response()->json(['error' => 'ParsedResults not found', 'requestData' => $requestData], 400);
+              }
+
+              $parsedResults = $requestData['ParsedResults'];
+
+              if (empty($parsedResults)) {
+                  return response()->json(['error' => 'ParsedResults is empty', 'requestData' => $requestData], 400);
+              }
+
+              $allMatches = [];
+              $page = 1;
+              foreach ($parsedResults as $parsedResult) {
+                  if (!isset($parsedResult['TextOverlay']['Lines'])) {
+                      return response()->json(['error' => 'Lines not found in TextOverlay', 'parsedResult' => $parsedResult], 400);
+                  }
+
+                  $ocrResults = $parsedResult['TextOverlay']['Lines'];
+
+                  foreach ($ocrResults as &$line) {
+                      if (isset($line['Words'][0])) {
+                          $line['left'] = $line['Words'][0]['Left'];
+                          $line['top'] = $line['Words'][0]['Top'];
+                          $line['width'] = $line['Words'][0]['Width'];
+                          $line['height'] = $line['Words'][0]['Height'];
+                      } else {
+                          $line['left'] = 0;
+                          $line['top'] = 0;
+                          $line['width'] = 0;
+                          $line['height'] = 0;
+                      }
+
+                      if (!isset($line['LineText'])) {
+                          $line['LineText'] = '';
+                      }
+                  }
+
+                  $sortedOcrResults = $this->sortOcrResults($ocrResults);
+                  $groupedOcrResults = $this->groupLinesByProximity($sortedOcrResults);
+                  $groupedOcrResults = array_map([$this, 'preprocessText'], $groupedOcrResults);
+
+                  $oldProducts = DB::table('searcher')->get();
+
+                  $productNames = $oldProducts->map(function ($product) {
+                     return ['id' => $product->id, 'name' => $product->name_product];
+                  })->toArray();
+
+                  $productNames = array_map([$this, 'preprocessText'], $productNames);
+
+                  $matches = $this->matchProducts($groupedOcrResults, $productNames);
+
+                  foreach ($matches as &$match) {
+                      $match['Page'] = $page;
+                  }
+
+                  $allMatches = array_merge($allMatches, $matches);
+                  $page++;
+              }
+
+              return response()->json($allMatches);
+              break;
+      }
+
+    }
+}
